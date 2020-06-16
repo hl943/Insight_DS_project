@@ -1,0 +1,16 @@
+{% extends "template.html" %}
+{% block content %}
+<div class="ui statistics">
+    <div class="red statistic">
+        <div class="label">
+            The water stress at {{city}}, {{region}} in the next hour is:
+        </div>
+        <div class="value">
+            <i class="tint icon"></i> {{water_stress}}
+        </div>
+        <div class="label">
+            Bar
+        </div>
+ 
+</div>
+{% endblock %}

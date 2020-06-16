@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>WaterUP API </title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-light-grey w3-card">
+    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-large"><b>Home</b></a>
+    <a href="#waterup" class="w3-bar-item w3-button w3-padding-large w3-hide-small"><b>About WaterUP</b></a>
+    <a href="#me" class="w3-bar-item w3-button w3-padding-large w3-hide-small"><b>About me</b></a>
+    <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hide-small"><b>Contact</b></a>
+    <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
+  </div>
+</div>
+
+<style>
+    body,h1,h5 {font-family: "Raleway", sans-serif}
+    body, html {height: 100%
+    }
+    .bgimg {
+      background-image: url("images/treman_1.jpg");
+      min-height: 100%;
+      background-position: center;
+      background-size: cover;
+    }
+</style>
+
+<!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
+<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
+  <a href="#waterup" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">About WaterUP</a>
+  <a href="#me" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">About me</a>
+  <a href="#contact" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">Contact</a>
+</div>
+
+<!-- Header with full-height image -->
+<header class="bgimg w3-display-container w3-grayscale-min" id="home">
+    <div class="w3-display-left w3-text-black" style="padding:48px">
+      <span class="w3-jumbo w3-hide-small">Help farmers make better irrigation decision</span><br>
+      <span class="w3-xxlarge w3-hide-large w3-hide-medium">SHelp farmers make better irrigation decision</span><br>
+      <span class="w3-large">With real time water potential prediction</span>
+    </div> 
+    <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
+        <i class="fa fa-github w3-hover-opacity"></i>
+        <i class="fa fa-linkedin w3-hover-opacity"></i>
+        <i class="fa fa-twitter w3-hover-opacity"></i>
+        <i class="fa fa-instagram w3-hover-opacity"></i>
+    </div>
+</header>
+
+<!-- Header with full-height image -->
+<!-- <header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+    <img src = "../images/treman_1.jpg" alt="Treman state park" width="1500" height="1000">
+    <div class="w3-display-left w3-text-black" style="padding:48px">
+      <span class="w3-jumbo w3-hide-small">Help farmers make better irrigation decision</span><br>
+      <span class="w3-xxlarge w3-hide-large w3-hide-medium">Start something that matters</span><br>
+      <span class="w3-large">With real time water potential prediction</span>
+    </div> 
+    <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
+        <i class="fa fa-github w3-hover-opacity"></i>
+        <i class="fa fa-linkedin w3-hover-opacity"></i>
+        <i class="fa fa-twitter w3-hover-opacity"></i>
+        <i class="fa fa-instagram w3-hover-opacity"></i>
+    </div>
+</header> -->
+
+<!-- The Band Section -->
+<div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="waterup">
+<h2 class="w3-jumbo"><b>WaterUP</b></h2>
+<p class="w3-opacity"><i>We help farmers make better irrigation decision</i></p>
+<p class="w3-justify">Under the backdrop of climate change, orchards around the world are facing unprecedented challenges of water scarcity. The WaterUP API is created for growers and orchard managers to inform their irrigation descision with Machine Learning to predict water stress in plants</p>
+<div class="w3-row w3-padding-32">
+    <div class="w3-center">
+    <p>The Water Potential Prediction</p>
+    <p>The water potential at <b>{{city}}, {{region}}</b>, in the next hour is: </p>
+    <p class="w3-jumbo w3-text-red"><b>{{water_stress}} bar</b></p>
+    </div>
+<p class="w3-center">Under this water stress, we recommend irrigation amount following UC Davis's guideline in <a href="http://ucmanagedrought.ucdavis.edu/PDF/UCCE%20-%20Walnut,%20Almond%20and%20Prune.pdf">this</a> link </p>
+</div>
+<p>Using the waterUP api is simple. To query the water potential forecast in up to 3 days in advance, simple go to the endpoint: </p>
+</div>
+
+<!-- About me Section -->
+<div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="me">
+    <h2 class="w3-jumbo"><b>About me</b></h2>
+    <p class="w3-opacity"><i>I am Hanwen Lu, A mechanical engineer by training, a data and machine learning enthusiat</i></p>
+    <p class="w3-center">Something about myself and also add an image below</p>
+    <div class="w3-row w3-padding-32">
+        <div class="w3-center">
+        <p>The Water Potential Prediction</p>
+        </div>
+    </div>
+    </div>
