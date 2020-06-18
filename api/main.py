@@ -3,7 +3,6 @@ from fastapi import FastAPI, Request, Depends, BackgroundTasks
 from fastapi.templating import Jinja2Templates
 import uvicorn 
 import requests
-import time
 from datetime import datetime
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -23,11 +22,9 @@ from pydantic import BaseModel
 # Import ML model related packages
 import pandas as pd
 import joblib, os
-import preprocessing_api #data preprocessing (specific to weather API, may need to modify if data source is different)
 
 # Postgres Database
 DATABASE_URL = "postgresql://usertest:usertest222@127.0.0.1"
-
 
 # Load ML model from database? 
 xbg_cv = joblib.load("pretrained_model/xgb_best.pkl")
@@ -38,6 +35,8 @@ models.Base.metadata.create_all(bind=engine)
 
 templates = Jinja2Templates(directory = "templates")
 
+
+# Define return class from prediction:
 class Prediction(BaseModel):
     city: str
     region: str
@@ -47,6 +46,7 @@ class Prediction(BaseModel):
     water_stress: List[float]
 
 
+# Launching database
 def get_db():
     try:
         db = SessionLocal()
@@ -84,7 +84,7 @@ def get_weather(lat, lon, period=1):
         # df=df.set_index('date_time')
         # There is a missing step here, post data to the database, and retrive a csv file for data. Database and api query setup is not ready, use local csv first
         #transform into time series data sequence (If for LSTM, otherwise no need
-        data = preprocessing_api.clean_weather_data("lib/Napa_weather_data_test.csv")
+        data = clean_weather_data("lib/Napa_weather_data_test.csv")
         start_date = '2019-10-01 13:00:00'  # In an actual application, this is below
         start_date = datetime.strptime(start_date, '%Y-%m-%d %H:%M:%S')
         # start_date = pd.Timestamp.now().round('60min')
@@ -107,8 +107,8 @@ def get_forecast(lat, lon, period=1):
         # df = pd.DataFrame(req_data)
         # df=df.set_index('date_time')
         # There is a missing step here, post data to the database, and retrive a csv file for data. Database and api query setup is not ready, use local csv first
-        #transform into time series data sequence (If for LSTM, otherwise no need
-        data = preprocessing_api.clean_weather_data("lib/Napa_weather_data_test.csv")
+        #transform into time series data sequence (If for LSTM, otherwise no need)
+        data = clean_weather_data("lib/Napa_weather_data_test.csv")
         start_date = '2019-10-01 13:00:00'  # In an actual application, this is below
         start_date = datetime.strptime(start_date, '%Y-%m-%d %H:%M:%S')
         # start_date = pd.Timestamp.now().round('60min')
@@ -117,6 +117,25 @@ def get_forecast(lat, lon, period=1):
         # hour_range = [start_date + datetime.timedelta(n) for n in range(int ((end_date - start_date).hours))]
         hour_range = pd.date_range(start_date, end_date, freq='H')
         return data.values, hour_range
+
+
+# Define cleaning function to clean weather data read from Mesonet_api
+def clean_weather_data(weather_path):
+    # clean on weather dataframe
+    df = pd.read_csv(weather_path)
+    Hour = df['Hour (PST)'].astype(str)
+    i=0
+    for hour in Hour:
+        if len(hour)<4:
+            hour="0"+str(hour)
+        if hour[:2] == '24':
+            hour = '0000'
+        hour = str(hour[:2])+":"+str(hour[2:])
+        Hour[i] = hour
+        i+=1
+    df = df.set_index(pd.DatetimeIndex(df['Datetime']))
+    df.drop('Datetime', axis=1, inplace=True)
+    return df
 
 
 @app.get("/")
@@ -158,16 +177,3 @@ async def get_prediction(period:int):
     json_re_dict=jsonable_encoder(re_dict)
     return json_re_dict
 
-# @app.post("/weather")
-# def create_weather(weather_request: WeatherRequest, db: Session = Depends(get_db)):
-#     """
-#     create a weather and stores it in the database
-#     """
-#     weather = Weather()
-#     weather.air_temp = weather_request.air_temp
-#     db.add(weather)
-#     db.commit()
-#     return {
-#         "code": success,
-#         "message": "weather data created"
-#     }

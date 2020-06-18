@@ -1,4 +1,12 @@
+python37
 fastapi
 uviccorn
 jinja2
 sqlalchemy 
+datetime
+typing
+pydantic
+pandas
+numpy
+joblib
+os
