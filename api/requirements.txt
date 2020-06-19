@@ -1,4 +1,3 @@
-python37
 fastapi
 uviccorn
 jinja2
