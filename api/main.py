@@ -164,7 +164,7 @@ def home(request: Request): # background_tasks: BackgroundTasks
     data, hour_range= get_weather(lat, lon)
     prediction = xbg_cv.predict(data)
     water_stress=prediction[-1]
-    
+
     return templates.TemplateResponse("home.html", {
         "request": request,
         "water_stress": water_stress, 
@@ -206,5 +206,5 @@ async def get_prediction(request: Request, period:int):
     return json_re_dict
 
 
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
