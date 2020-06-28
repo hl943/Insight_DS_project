@@ -19,8 +19,19 @@ def clean_weather_data(weather_path):
         hour = str(hour[:2])+":"+str(hour[2:])
         Hour[i] = hour
         i+=1
-    df = df.set_index(pd.DatetimeIndex(df['Datetime']))
-    df.drop('Datetime', axis=1, inplace=True)
+        
+    # Drop useless columns
+    df['Date_time'] = df['Date']+' '+Hour
+    df = df.set_index(pd.DatetimeIndex(df['Date_time']))
+    df.drop('Date_time', axis=1, inplace=True)
+    df.drop('Date', axis=1, inplace=True)
+    df['incident energy'] = df['Sol Rad (W/sq.m)']*df['sunshine duration']/60/1000
+    df.drop('Wind Dir (0-360)', axis=1, inplace=True)
+    df.drop('Dew Point (C)', axis=1, inplace=True)
+    df.drop('Vap Pres (kPa)', axis=1, inplace=True)
+    df.drop('Sol Rad (W/sq.m)', axis=1, inplace=True)
+    df.drop('sunshine duration', axis=1, inplace=True)
+    df.drop('Eto simulated', axis=1, inplace=True)
     return df
 
 def clean_mt_data(mT_path):

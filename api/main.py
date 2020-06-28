@@ -1,5 +1,4 @@
 # Import api related packages
-import models
 from fastapi import FastAPI, Request, Depends, BackgroundTasks
 from fastapi.templating import Jinja2Templates
 import uvicorn 
@@ -30,7 +29,6 @@ xbg_cv = joblib.load("pretrained_model/xgb_best.pkl")
 
 app = FastAPI()
 
-models.Base.metadata.create_all(bind=engine)
 
 templates = Jinja2Templates(directory = "templates")
 
@@ -64,7 +62,6 @@ def get_location(ip_address: str):
     """
     try:
         response = requests.get("http://ip-api.com/json/{}".format(ip_address))
-        # response = requests.get("http://ip-api.com/json/24.97.110.216")
         js = response.json()
         region = js['region']
         city = js['city']
@@ -75,11 +72,12 @@ def get_location(ip_address: str):
         return "Unknown"
 
 # Get location weather based on client's geolocation 
-def get_weather(lat, lon, period=1):
+def get_weather(lat, lon, stride=4, lag=24):
     """
     Args: 
         lat, lon: the cooridinate of the geolocation
-        period: the stride at which moving average is taken
+        stride: the stride at which moving average is taken, default is 4
+        lag: the total weather history to consider in unit of hours, default is 24
     Output:
         feature matrix ready for model inference
         the datetime index of the feature maxtrix
@@ -101,46 +99,31 @@ def get_weather(lat, lon, period=1):
 
     # Here, due to the lack of availability of soil data, we used the data from previous year
     # By default, fetch one day history to make inference at next hour. 
-    start_date = pd.Timestamp.now().round('60min')+relativedelta(days=-1)+relativedelta(years=-1) 
+    start_date = pd.Timestamp.now().round('60min')+relativedelta(hours=-lag)+relativedelta(hours=-stride)+relativedelta(years=-1) 
     end_date = pd.Timestamp.now().round('60min')+relativedelta(years=-1)
     hour_range = pd.date_range(start_date, end_date, freq='H')
     data = data[start_date: end_date]
-    # data = engineer_features.feat_eng(data)
-    return data.values, hour_range
+    X_fe = engineer_features.feat_eng(data, stride, lag)
+    return X_fe.values, hour_range
 
-def get_forecast(lat, lon, period=1):
+def get_forecast(lat, lon, period, stride=4, lag=24):
     """
     Args: 
-        Client's latitude, longtitude and forecast period
+        lat, lon: the cooridinate of the geolocation
+        period: forecast requested by client in unit of hours 
+        stride: the stride at which moving average is taken, default is 4
+        lag: the total weather history to consider in unit of hours, default is 24
     Output:
         weather forecast data from weather api up to forecast period
     """
     # Note here since I did not pay for forecasting service on the training data, only historical data is used. 
     data = clean_weather_data("lib/Napa_weather_data_test.csv")
-    start_date = pd.Timestamp.now().round('60min')+relativedelta(years=-1)+relativedelta(days=-1)
+    start_date = pd.Timestamp.now().round('60min')+relativedelta(hours=-lag)+relativedelta(hours=-stride)+relativedelta(years=-1)
     end_date = pd.to_datetime(start_date)+pd.DateOffset(hours=period)
     data = data[start_date: end_date]
     hour_range = pd.date_range(start_date, end_date, freq='H')
-    return data.values, hour_range
-
-
-# Define cleaning function to clean weather data read from Mesonet_api
-def clean_weather_data(weather_path):
-    # clean on weather dataframe
-    df = pd.read_csv(weather_path)
-    Hour = df['Hour (PST)'].astype(str)
-    i=0
-    for hour in Hour:
-        if len(hour)<4:
-            hour="0"+str(hour)
-        if hour[:2] == '24':
-            hour = '0000'
-        hour = str(hour[:2])+":"+str(hour[2:])
-        Hour[i] = hour
-        i+=1
-    df = df.set_index(pd.DatetimeIndex(df['Datetime']))
-    df.drop('Datetime', axis=1, inplace=True)
-    return df
+    X_fe = engineer_features.feat_eng(data, stride, lag)
+    return X_fe.values, hour_range
 
 
 @app.get("/")
@@ -149,7 +132,6 @@ def home(request: Request): # background_tasks: BackgroundTasks
     displays the mainpage of the waterUp api with pictures and graphs for water stress 
     """
     ip_address = request.client.host
-    # ip_address = "24.97.110.216"
     try: 
         (region, city, lat, lon) = get_location(ip_address)
     except ValueError as VE:
@@ -180,7 +162,6 @@ async def get_prediction(request: Request, period:int):
     try: 
         (region, city, lat, lon) = get_location(ip_address)
         data, date_range = get_forecast(lat, lon, period)
-        # X = engineer_features(data, )
         predictions = xbg_cv.predict(data)
         re_dict = Prediction(
             city=city,
