@@ -1,6 +1,8 @@
 # WaterUP API code repository 
 
-This repository contains the "docproc" package and sample Python scripts to download PDF files and summarize them.
+This repository contains scripts for WaterUP front end & API, pickled XGBoost model for 
+grapevine trained on weather, soil and micro-tensiometer data at Mt. George, Napa Valley.
+
 
 ## Summary
 
@@ -19,23 +21,35 @@ for notes on how to deploy the project on a live system.
 ### Prerequisites
 
 To get started you need to install Python 3.7 and create an virtual environment.
-The pip-requirments.txt file contains all the PyPi packages to install. 
+The prequirments.txt file contains all the PyPi packages to install. 
 
 To install:
 
-    python3 -m pip install -r requirments.txt
+    pip install -r requirments.txt
 
-or install every package in the requirments.txt file like:
 
-    python3 -m pip install [Name of the package]
+
+## Testing
+
+To run this API on your local machine, go to api directory, in the command line enter: 
+
+     uvicorn main:app --reload
+
+Then in your browser, you can visit the front end at port 8000
+
+     localhost:8000
+
+For water stress forecast, go to the endpoint: 
+
+     /forecast/period=[time period of prediction to return]
 
 
 ## Authors
 
-  - **Sina Fathi-Kazerooni** - *Provided the whole package* -
-    [Website](https://sinafathi.com)
+  - **Hanwen Lu**
 
-
-## License
-
-This project is subject to Mamome company licensing.
+### data sources:
+  - weather data: CIMIS: https://cimis.water.ca.gov/WSNReportCriteria.aspx
+  - soil data: MeteoBlue history+ service: https://www.meteoblue.com/en/historyplus
+  - water potential/stress ground truth: FloraPulse: https://www.florapulse.com/
+  
