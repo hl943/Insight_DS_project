@@ -21,7 +21,7 @@ grapevine trained on weather, soil and micro-tensiometer data at Mt. George, Nap
 To get started you need to install Python 3.7 and create an virtual environment.
 The prequirments.txt file contains all the PyPi packages to install. 
 
-To install:
+To install, go to api folder directory:
 
     pip install -r requirments.txt
 
