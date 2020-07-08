@@ -8,7 +8,7 @@ from dateutil.relativedelta import relativedelta
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from typing import List
-
+from preprocessing_api import clean_weather_data
 
 
 # Import database packages 
