@@ -25,7 +25,7 @@ import joblib, os
 import engineer_features
 
 
-xbg_cv = joblib.load("pretrained_model/xgb_best.pkl")
+xbg = joblib.load("pretrained_model/xgb_final.pkl")
 
 app = FastAPI()
 
@@ -61,7 +61,8 @@ def get_location(ip_address: str):
         Client's geolocation
     """
     try:
-        response = requests.get("http://ip-api.com/json/{}".format(ip_address))
+        # response = requests.get("http://ip-api.com/json/{}".format(ip_address))
+        response = requests.get('http://ip-api.com/json/24.97.110.217')
         js = response.json()
         region = js['region']
         city = js['city']
@@ -72,7 +73,7 @@ def get_location(ip_address: str):
         return "Unknown"
 
 # Get location weather based on client's geolocation 
-def get_weather(lat, lon, stride=4, lag=24):
+def get_weather(lat, lon, lag=23, stride=1):
     """
     Args: 
         lat, lon: the cooridinate of the geolocation
@@ -103,10 +104,10 @@ def get_weather(lat, lon, stride=4, lag=24):
     end_date = pd.Timestamp.now().round('60min')+relativedelta(years=-1)
     hour_range = pd.date_range(start_date, end_date, freq='H')
     data = data[start_date: end_date]
-    X_fe = engineer_features.feat_eng(data, stride, lag)
-    return X_fe.values, hour_range
+    X_fe = engineer_features.feat_eng(data)
+    return X_fe, hour_range
 
-def get_forecast(lat, lon, period, stride=4, lag=24):
+def get_forecast(lat, lon, period, lag=23, stride=1):
     """
     Args: 
         lat, lon: the cooridinate of the geolocation
@@ -122,8 +123,8 @@ def get_forecast(lat, lon, period, stride=4, lag=24):
     end_date = pd.to_datetime(start_date)+pd.DateOffset(hours=period)
     data = data[start_date: end_date]
     hour_range = pd.date_range(start_date, end_date, freq='H')
-    X_fe = engineer_features.feat_eng(data, stride, lag)
-    return X_fe.values, hour_range
+    X_fe = engineer_features.feat_eng(data)
+    return X_fe, hour_range
 
 
 @app.get("/")
@@ -144,7 +145,7 @@ def home(request: Request): # background_tasks: BackgroundTasks
         "Error": "Unknown" 
         })
     data, hour_range= get_weather(lat, lon)
-    prediction = xbg_cv.predict(data)
+    prediction = xbg.predict(data)
     water_stress=prediction[-1]
 
     return templates.TemplateResponse("home.html", {
@@ -162,7 +163,7 @@ async def get_prediction(request: Request, period:int):
     try: 
         (region, city, lat, lon) = get_location(ip_address)
         data, date_range = get_forecast(lat, lon, period)
-        predictions = xbg_cv.predict(data)
+        predictions = xbg.predict(data)
         re_dict = Prediction(
             city=city,
             region=region,
