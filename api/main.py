@@ -30,7 +30,7 @@ xbg = joblib.load("pretrained_model/xgb_final.pkl")
 app = FastAPI()
 
 
-templates = Jinja2Templates(directory = "templates")
+templates = Jinja2Templates(directory = "static/templates")
 
 
 # Define return class from prediction:
@@ -61,8 +61,7 @@ def get_location(ip_address: str):
         Client's geolocation
     """
     try:
-        # response = requests.get("http://ip-api.com/json/{}".format(ip_address))
-        response = requests.get('http://ip-api.com/json/24.97.110.217')
+        response = requests.get("http://ip-api.com/json/{}".format(ip_address))
         js = response.json()
         region = js['region']
         city = js['city']
@@ -84,6 +83,7 @@ def get_weather(lat, lon, lag=23, stride=1):
         the datetime index of the feature maxtrix
     """
     # Mesonet API calls, the following code fetches weather data at given location. API keys are hidden...
+    # apitoken = ***************
     # radius=str(lat)+','+str(lon)+",100&limit=1" 
     # variables ='air_temp,relative_humidity,wind_speed,solar_radiation,precip_accum_one_hour'
     # theurl='https://api.synopticdata.com/v2/stations/timeseries?'+'radius='+radius+'recent=120&vars='+variables+'&token='+apitoken
@@ -117,6 +117,7 @@ def get_forecast(lat, lon, period, lag=23, stride=1):
     Output:
         weather forecast data from weather api up to forecast period
     """
+
     # Note here since I did not pay for forecasting service on the training data, only historical data is used. 
     data = clean_weather_data("lib/Napa_weather_data_test.csv")
     start_date = pd.Timestamp.now().round('60min')+relativedelta(hours=-lag)+relativedelta(hours=-stride)+relativedelta(years=-1)
@@ -128,7 +129,7 @@ def get_forecast(lat, lon, period, lag=23, stride=1):
 
 
 @app.get("/")
-def home(request: Request): # background_tasks: BackgroundTasks
+def home(request: Request): 
     """
     displays the mainpage of the waterUp api with pictures and graphs for water stress 
     """

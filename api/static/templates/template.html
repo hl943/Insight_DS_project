@@ -25,7 +25,7 @@
     body, html {height: 100%
     }
     .bgimg {
-      background-image: url("images/treman_1.jpg");
+      background-image: url_for('static', filename = 'treman_1.jpg');
       min-height: 100%;
       background-position: center;
       background-size: cover;
@@ -41,40 +41,25 @@
 
 <!-- Header with full-height image -->
 <header class="bgimg w3-display-container w3-grayscale-min" id="home">
-    <div class="w3-display-left w3-text-black" style="padding:48px">
-      <span class="w3-jumbo w3-hide-small">Help farmers make better irrigation decision</span><br>
-      <span class="w3-xxlarge w3-hide-large w3-hide-medium">SHelp farmers make better irrigation decision</span><br>
-      <span class="w3-large">With real time water potential prediction</span>
-    </div> 
-    <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
-        <i class="fa fa-github w3-hover-opacity"></i>
-        <i class="fa fa-linkedin w3-hover-opacity"></i>
-        <i class="fa fa-twitter w3-hover-opacity"></i>
-        <i class="fa fa-instagram w3-hover-opacity"></i>
-    </div>
+  <div class="w3-display-left w3-text-black" style="padding:48px">
+    <span class="w3-jumbo w3-hide-small">Help farmers make better irrigation decision</span><br>
+    <span class="w3-xxlarge w3-hide-large w3-hide-medium">SHelp farmers make better irrigation decision</span><br>
+    <span class="w3-large">With real time water potential prediction</span>
+  </div> 
+  <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
+      <i class="fa fa-github w3-hover-opacity"></i>
+      <i class="fa fa-linkedin w3-hover-opacity"></i>
+      <i class="fa fa-twitter w3-hover-opacity"></i>
+      <i class="fa fa-instagram w3-hover-opacity"></i>
+  </div>
 </header>
 
-<!-- Header with full-height image -->
-<!-- <header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
-    <img src = "../images/treman_1.jpg" alt="Treman state park" width="1500" height="1000">
-    <div class="w3-display-left w3-text-black" style="padding:48px">
-      <span class="w3-jumbo w3-hide-small">Help farmers make better irrigation decision</span><br>
-      <span class="w3-xxlarge w3-hide-large w3-hide-medium">Start something that matters</span><br>
-      <span class="w3-large">With real time water potential prediction</span>
-    </div> 
-    <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
-        <i class="fa fa-github w3-hover-opacity"></i>
-        <i class="fa fa-linkedin w3-hover-opacity"></i>
-        <i class="fa fa-twitter w3-hover-opacity"></i>
-        <i class="fa fa-instagram w3-hover-opacity"></i>
-    </div>
-</header> -->
 
-<!-- The Band Section -->
+<!-- The website Section -->
 <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="waterup">
-<h2 class="w3-jumbo"><b>WaterUP</b></h2>
-<p class="w3-opacity"><i>We help farmers make better irrigation decision</i></p>
-<p class="w3-justify">Under the backdrop of climate change, orchards around the world are facing unprecedented challenges of water scarcity. The WaterUP API is created for growers and orchard managers to inform their irrigation descision with Machine Learning to predict water stress in plants</p>
+<h2 class="w3-jumbo"><b>WaterUp</b></h2>
+<p class="w3-opacity"><i>We aim to help growers make better irrigation decissions</i></p>
+<p class="w3-justify">Under the backdrop of the global climate and water challegenes, orchards around the world are facing unprecedented challenges of water scarcity. The WaterUP API is created for growers and orchard managers to inform their irrigation descisions with machine learning to predict water stress in plants</p>
 <div class="w3-row w3-padding-32">
     <div class="w3-center">
     <p>The Water Potential Prediction</p>
@@ -83,17 +68,38 @@
     </div>
 <p class="w3-center">Under this water stress, we recommend irrigation amount following UC Davis's guideline in <a href="http://ucmanagedrought.ucdavis.edu/PDF/UCCE%20-%20Walnut,%20Almond%20and%20Prune.pdf">this</a> link </p>
 </div>
-<p>Using the waterUP api is simple. To query the water potential forecast in up to 3 days in advance, simple go to the endpoint: /forecast/period={period}, where {period} is an integer of number of hours you wish to forecast from now rounding up to the next hour</p>
+<p>Using the waterUp api is simple. To query the water potential forecast in up to 3 days in advance, simple go to the endpoint: /forecast/period={period}, where {period} is an integer of number of hours you wish to forecast from now rounding up to the next hour</p>
 </div>
 
 <!-- About me Section -->
 <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="me">
     <h2 class="w3-jumbo"><b>About me</b></h2>
-    <p class="w3-opacity"><i>I am Hanwen Lu, A mechanical engineer by training, a data and machine learning enthusiat</i></p>
-    <p class="w3-center">Something about myself and also add an image below</p>
-    <div class="w3-row w3-padding-32">
-        <div class="w3-center">
-        <p>The Water Potential Prediction</p>
+    <p class="w3-opacity"><i>I am Hanwen Lu, a mechanical engineer by training, a aspiring data scientist looking for explore the exciting opportunities in DS industries</i></p>
+    </div>
+
+
+<!-- The Contact Section -->
+<div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
+  <h2 class="w3-wide w3-center">CONTACT</h2>
+  <p class="w3-opacity w3-center"><i>Interested in collaboration ? Drop a note!</i></p>
+  <div class="w3-row w3-padding-32">
+    <div class="w3-col m6 w3-large w3-margin-bottom">
+      <i class="fa fa-map-marker" style="width:30px"></i> New York, US<br>
+      <i class="fa fa-envelope" style="width:30px"> </i> Email: hanwen.lu.ds@gmail.com<br>
+    </div>
+    <div class="w3-col m6">
+      <form action="/action_page.php" target="_blank">
+        <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
+          <div class="w3-half">
+            <input class="w3-input w3-border" type="text" placeholder="Name" required name="Name">
+          </div>
+          <div class="w3-half">
+            <input class="w3-input w3-border" type="text" placeholder="Email" required name="Email">
+          </div>
         </div>
+        <input class="w3-input w3-border" type="text" placeholder="Message" required name="Message">
+        <button class="w3-button w3-black w3-section w3-right" type="submit">SEND</button>
+      </form>
     </div>
-    </div>
+  </div>
+</div>
