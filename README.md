@@ -31,6 +31,9 @@ To install, go to api folder directory:
 
 The current water stress inference model uses XGBoost regression tree trained on weather, soil and water stress dataset from grapevine in Napa Valley, CA from May 2019 to Dec 2019 during the growing season. This model is validated with hold out test set from May to June 2020. The water stress of model prediction and test are as shown:
 
+![train_vs_test](https://user-images.githubusercontent.com/54079574/87502673-259d0a00-c630-11ea-97e2-c37362680384.png)
+
+
 And the daily maximum stress are as shown:
 
 
