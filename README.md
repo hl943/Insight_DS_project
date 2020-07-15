@@ -36,6 +36,7 @@ The current water stress inference model uses XGBoost regression tree trained on
 
 And the daily maximum stress are as shown:
 
+![daily_max_train_vs_test](https://user-images.githubusercontent.com/54079574/87502757-73b20d80-c630-11ea-9c4b-0373d32a17a7.png)
 
 ### Testing
 
