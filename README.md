@@ -2,7 +2,7 @@
 
 This repository contains scripts for WaterUp front end, API and the ML model for 
 grapevine trained on weather, soil and micro-tensiometer data at Mt. George, Napa Valley.
-You can access this api from the following url: http://hanweninsightproject.xyz/
+You can access this api from the following url: http://hanweninsightproject.xyz:8000
 
 
 ## Summary
