@@ -13,7 +13,7 @@ graphql-relay==3.0.0
 h11==0.8.1
 idna==2.9
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 joblib==0.15.1
 MarkupSafe==1.1.1
 mkl-fft==1.1.0
