@@ -14,7 +14,7 @@ h11==0.8.1
 idna==2.9
 itsdangerous==1.1.0
 Jinja2==2.11.2
-joblib==0.15.1
+joblib==1.2.0
 MarkupSafe==1.1.1
 mkl-fft==1.1.0
 mkl-random==1.1.1
